@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Panel | Akshaj Solar</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+  body { background: #f7f9fc; color: #14213d; padding: 30px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { margin-bottom: 6px; }
+  .sub { color: #6b7280; margin-bottom: 24px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .btn { padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+  .btn-refresh { background: #1e3a8a; color: #fff; }
+  .btn-danger { background: #d32f2f; color: #fff; }
+  .btn-logout { background: #6b7280; color: #fff; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  th, td { padding: 12px 14px; text-align: left; font-size: 14px; border-bottom: 1px solid #eef1f6; }
+  th { background: #1e3a8a; color: #fff; }
+  tr:hover { background: #f9fafb; }
+  .del-btn { background: #fee2e2; color: #d32f2f; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600; }
+  .empty { text-align: center; padding: 40px; color: #6b7280; }
+
+  #login-screen {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .login-box h2 { margin-bottom: 6px; color: #14213d; }
+  .login-box p.sub2 { color: #6b7280; font-size: 13.5px; margin-bottom: 22px; }
+  .login-box input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #dbe1ea;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f97316, #fbbf24);
+    color: #14213d;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .login-error { color: #d32f2f; font-size: 13px; margin-top: 12px; min-height: 16px; }
+  #panel-screen { display: none; }
+</style>
+</head>
+<body>
+
+  <div id="login-screen">
+    <div class="login-box">
+      <h2>Admin Login</h2>
+      <p class="sub2">Akshaj Solar & Electrical Solutions</p>
+      <form id="login-form">
+        <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="current-password" required />
+        <button type="submit">Login</button>
+      </form>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <div id="panel-screen">
+    <div class="wrap">
+      <h1>Enquiries Admin Panel</h1>
+      <p class="sub">Akshaj Solar & Electrical Solutions — all website enquiries</p>
+      <div class="toolbar">
+        <button class="btn btn-refresh" onclick="loadEnquiries()">🔄 Refresh</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-danger" onclick="deleteAll()">🗑️ Delete All</button>
+          <button class="btn btn-logout" onclick="logout()">🔒 Logout</button>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Property</th>
+            <th>Address</th>
+            <th>Message</th>
+            <th>Page</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="enquiry-body">
+          <tr><td colspan="9" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "";
+
+    function getToken() {
+      return sessionStorage.getItem("akshaj_admin_token");
+    }
+
+    function showPanel() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("panel-screen").style.display = "block";
+      loadEnquiries();
+    }
+
+    function showLogin() {
+      document.getElementById("panel-screen").style.display = "none";
+      document.getElementById("login-screen").style.display = "flex";
+    }
+
+    function logout() {
+      sessionStorage.removeItem("akshaj_admin_token");
+      showLogin();
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const password = document.getElementById("admin-password").value;
+      const errorBox = document.getElementById("login-error");
+      errorBox.textContent = "";
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          sessionStorage.setItem("akshaj_admin_token", data.token);
+          showPanel();
+        } else {
+          errorBox.textContent = data.error || "Incorrect password. Try again.";
+        }
+      } catch (err) {
+        errorBox.textContent = "Could not reach server. Is it running?";
+      }
+    });
+
+    async function loadEnquiries() {
+      const tbody = document.getElementById("enquiry-body");
+      tbody.innerHTML = '<tr><td colspan="9" class="empty">Loading...</td></tr>';
+      try {
+        const res = await fetch(`${API_BASE}/api/enquiries`, {
+          headers: { "x-admin-token": getToken() }
+        });
+        if (res.status === 401) { logout(); return; }
+        const data = await res.json();
+        if (!data.length) {
+          tbody.innerHTML = '<tr><td colspan="9" class="empty">No enquiries yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.map(e => `
+          <tr>
+            <td>${new Date(e.createdAt).toLocaleString()}</td>
+            <td>${e.name || "-"}</td>
+            <td>${e.phone || "-"}</td>
+            <td>${e.email || "-"}</td>
+            <td>${e.propertyType || "-"}</td>
+            <td>${e.address || "-"}</td>
+            <td>${e.message || "-"}</td>
+            <td>${e.page || "-"}</td>
+            <td><button class="del-btn" onclick="deleteOne('${e._id}')">Delete</button></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty">Failed to load. Is the server running?</td></tr>';
+      }
+    }
+
+    async function deleteOne(id) {
+      if (!confirm("Delete this enquiry?")) return;
+      await fetch(`${API_BASE}/api/enquiries/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-token": getToken() }
+      });
+      loadEnquiries();
+    }
+
+    async function deleteAll() {
+      if (!confirm("Delete ALL enquiries? This cannot be undone.")) return;
+      await fetch(`${API_BASE}/api/enquiries`, {
+        method: "DELETE",
+        headers: { "x-admin-token": getToken() }
+      });
+      loadEnquiries();
+    }
+
+    if (getToken()) {
+      showPanel();
+    } else {
+      showLogin();
+    }
+  </script>
+</body>
+</html>
