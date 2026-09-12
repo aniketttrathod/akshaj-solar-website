@@ -23,13 +23,13 @@ mongoose
 // Submit enquiry / contact form
 app.post("/api/contact", async (req, res) => {
   try {
-    const { name, email, phone, address, propertyType, message, page } = req.body;
+    const { name, email, phone, address, propertyType, electricityBill, message, page } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({ success: false, error: "Name and email are required" });
     }
 
-    const enquiry = new Enquiry({ name, email, phone, address, propertyType, message, page });
+    const enquiry = new Enquiry({ name, email, phone, address, propertyType, electricityBill, message, page });
     await enquiry.save();
     console.log("📥 New enquiry saved:", enquiry._id);
 

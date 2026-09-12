@@ -28,6 +28,7 @@ async function sendEmail(enquiry) {
         <p><b>Phone:</b> ${enquiry.phone || "-"}</p>
         <p><b>Address:</b> ${enquiry.address || "-"}</p>
         <p><b>Property Type:</b> ${enquiry.propertyType || "-"}</p>
+        <p><b>Monthly Electricity Bill:</b> ${enquiry.electricityBill || "-"}</p>
         <p><b>Message:</b> ${enquiry.message || "-"}</p>
         <p><b>Page:</b> ${enquiry.page || "-"}</p>
       `,

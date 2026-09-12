@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         phone: (fd.get("phone") || "").trim(),
         address: (fd.get("address") || "").trim(),
         propertyType: fd.get("propertyType") || "",
+        electricityBill: fd.get("electricityBill") || "",
         message: (fd.get("message") || "").trim(),
         page: window.location.pathname.split("/").pop() || "index.html",
       };

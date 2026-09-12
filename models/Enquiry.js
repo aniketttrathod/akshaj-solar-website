@@ -6,7 +6,8 @@ const enquirySchema = new mongoose.Schema(
     email: { type: String, required: true },
     phone: { type: String },
     address: { type: String },
-    propertyType: { type: String }, // Residential / Commercial
+    propertyType: { type: String }, // Residential / Commercial / Housing Society
+    electricityBill: { type: String }, // Monthly electricity bill range
     message: { type: String },
     page: { type: String }, // which page the form was submitted from
   },

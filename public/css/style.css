@@ -448,7 +448,7 @@ img { max-width: 100%; display: block; }
 
 /* Footer */
 .footer { background: var(--dark); color: #cbd5e1; padding: 60px 0 20px; }
-.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 40px; }
 .footer h4 { color: var(--white); font-size: 16px; margin-bottom: 18px; }
 .footer p { font-size: 14px; color: #94a3b8; }
 .footer ul li { margin-bottom: 10px; }
@@ -505,12 +505,91 @@ img { max-width: 100%; display: block; }
 .price-card ul li { padding: 7px 0; font-size: 14px; display: flex; gap: 10px; }
 .price-card ul li::before { content: "✓"; color: var(--dark-green); font-weight: 800; }
 
+/* Monthly electricity bill selector */
+.bill-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 6px;
+}
+.bill-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: 0.15s;
+  background: #fff;
+}
+.bill-option input { accent-color: var(--blue); }
+.bill-option:has(input:checked) {
+  border-color: var(--blue);
+  background: rgba(30, 58, 138, 0.06);
+  font-weight: 600;
+}
+@media (max-width: 480px) {
+  .bill-options { grid-template-columns: 1fr; }
+}
+
+/* How It Works process */
+.process-grid {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.process-step {
+  flex: 1 1 150px;
+  max-width: 170px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: processFadeIn 0.6s ease forwards;
+}
+.process-step:nth-child(1) { animation-delay: 0.05s; }
+.process-step:nth-child(3) { animation-delay: 0.2s; }
+.process-step:nth-child(5) { animation-delay: 0.35s; }
+.process-step:nth-child(7) { animation-delay: 0.5s; }
+.process-step:nth-child(9) { animation-delay: 0.65s; }
+.process-step:nth-child(11) { animation-delay: 0.8s; }
+@keyframes processFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.process-num {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.process-step h3 { font-size: 15.5px; margin-bottom: 6px; }
+.process-step p { font-size: 13px; color: var(--gray); }
+.process-arrow {
+  align-self: center;
+  color: var(--orange);
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+@media (max-width: 900px) {
+  .process-arrow { display: none; }
+  .process-grid { gap: 24px 16px; }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .hero .container { grid-template-columns: 1fr; }
   .features-grid, .services-grid, .work-grid, .testimonial-grid, .subsidy-cards, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-wrap { grid-template-columns: 1fr; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 640px) {
   .nav-links { display: none; }
@@ -519,4 +598,5 @@ img { max-width: 100%; display: block; }
   .features-grid, .services-grid, .work-grid, .testimonial-grid, .subsidy-cards, .pricing-grid, .form-row, .footer-grid { grid-template-columns: 1fr; }
   .work-card.large { grid-column: span 1; }
   .section-title { font-size: 27px; }
+  .process-step { flex: 1 1 42%; max-width: 45%; }
 }
