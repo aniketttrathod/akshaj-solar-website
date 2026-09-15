@@ -7,59 +7,55 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
   body { background: #f7f9fc; color: #14213d; padding: 30px; }
-  .wrap { max-width: 1100px; margin: 0 auto; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
   h1 { margin-bottom: 6px; }
   .sub { color: #6b7280; margin-bottom: 24px; }
-  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .btn { padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+  .btn { padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; }
   .btn-refresh { background: #1e3a8a; color: #fff; }
   .btn-danger { background: #d32f2f; color: #fff; }
   .btn-logout { background: #6b7280; color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, #f97316, #fbbf24); color: #14213d; }
   table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
   th, td { padding: 12px 14px; text-align: left; font-size: 14px; border-bottom: 1px solid #eef1f6; }
   th { background: #1e3a8a; color: #fff; }
   tr:hover { background: #f9fafb; }
   .del-btn { background: #fee2e2; color: #d32f2f; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600; }
+  .approve-btn { background: #dcfce7; color: #15803d; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12.5px; font-weight: 600; margin-right: 6px; }
   .empty { text-align: center; padding: 40px; color: #6b7280; }
 
-  #login-screen {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .login-box {
-    background: #fff;
-    border-radius: 16px;
-    padding: 40px 36px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    text-align: center;
-  }
+  #login-screen { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+  .login-box { background: #fff; border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 360px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); text-align: center; }
   .login-box h2 { margin-bottom: 6px; color: #14213d; }
   .login-box p.sub2 { color: #6b7280; font-size: 13.5px; margin-bottom: 22px; }
-  .login-box input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #dbe1ea;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 14px;
-  }
-  .login-box button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #f97316, #fbbf24);
-    color: #14213d;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-  }
+  .login-box input { width: 100%; padding: 12px 14px; border: 1px solid #dbe1ea; border-radius: 8px; font-size: 14px; margin-bottom: 14px; }
+  .login-box button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: linear-gradient(135deg, #f97316, #fbbf24); color: #14213d; font-weight: 700; font-size: 15px; cursor: pointer; }
   .login-error { color: #d32f2f; font-size: 13px; margin-top: 12px; min-height: 16px; }
   #panel-screen { display: none; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e5e9f0; }
+  .tab-btn { padding: 10px 18px; border: none; background: none; font-size: 14.5px; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab-btn.active { color: #1e3a8a; border-bottom-color: #1e3a8a; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .upload-box { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  .upload-box label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; margin-top: 12px; }
+  .upload-box input[type="text"], .upload-box input[type="file"] { width: 100%; padding: 10px 12px; border: 1px solid #dbe1ea; border-radius: 8px; font-size: 14px; }
+  .upload-status { font-size: 13px; margin-top: 10px; min-height: 16px; }
+
+  .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .photo-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  .photo-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
+  .photo-card-body { padding: 10px 12px; }
+  .photo-card-body p { font-size: 12.5px; color: #4b5563; margin-bottom: 8px; min-height: 16px; }
+
+  .review-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  .review-card .stars { color: #f59e0b; margin-bottom: 6px; }
+  .review-card .meta { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+  .status-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; margin-left: 8px; }
+  .status-pending { background: #fef3c7; color: #92400e; }
+  .status-approved { background: #dcfce7; color: #15803d; }
 </style>
 </head>
 <body>
@@ -78,39 +74,88 @@
 
   <div id="panel-screen">
     <div class="wrap">
-      <h1>Enquiries Admin Panel</h1>
-      <p class="sub">Akshaj Solar & Electrical Solutions — all website enquiries</p>
-      <div class="toolbar">
-        <button class="btn btn-refresh" onclick="loadEnquiries()">🔄 Refresh</button>
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-danger" onclick="deleteAll()">🗑️ Delete All</button>
+      <h1>Admin Panel</h1>
+      <p class="sub">Akshaj Solar & Electrical Solutions</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="enquiries" onclick="switchTab('enquiries')">Enquiries</button>
+        <button class="tab-btn" data-tab="photos" onclick="switchTab('photos')">Work Photos</button>
+        <button class="tab-btn" data-tab="reviews" onclick="switchTab('reviews')">Reviews</button>
+        <div style="margin-left:auto;">
           <button class="btn btn-logout" onclick="logout()">🔒 Logout</button>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Property</th>
-            <th>Bill Range</th>
-            <th>Address</th>
-            <th>Message</th>
-            <th>Page</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="enquiry-body">
-          <tr><td colspan="10" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
+
+      <!-- Enquiries Tab -->
+      <div class="tab-panel active" id="tab-enquiries">
+        <div class="toolbar">
+          <button class="btn btn-refresh" onclick="loadEnquiries()">🔄 Refresh</button>
+          <button class="btn btn-danger" onclick="deleteAllEnquiries()">🗑️ Delete All</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Property</th>
+              <th>Bill Range</th>
+              <th>Address</th>
+              <th>Message</th>
+              <th>Page</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="enquiry-body">
+            <tr><td colspan="10" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Work Photos Tab -->
+      <div class="tab-panel" id="tab-photos">
+        <div class="upload-box">
+          <h3 style="margin-bottom:4px;">Upload New Work Photo</h3>
+          <p style="font-size:13px; color:#6b7280;">This will appear on the "Our Work" page immediately.</p>
+          <form id="photo-upload-form">
+            <label>Photo</label>
+            <input type="file" id="photo-file" accept="image/*" required />
+            <label>Caption (optional)</label>
+            <input type="text" id="photo-caption" placeholder="e.g. Rooftop Installation - Wagholi" />
+            <button type="submit" class="btn btn-primary" style="margin-top:16px;">Upload Photo</button>
+            <div class="upload-status" id="upload-status"></div>
+          </form>
+        </div>
+        <div class="toolbar">
+          <button class="btn btn-refresh" onclick="loadPhotos()">🔄 Refresh</button>
+        </div>
+        <div class="photo-grid" id="photo-grid">
+          <p class="empty">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Reviews Tab -->
+      <div class="tab-panel" id="tab-reviews">
+        <div class="toolbar">
+          <button class="btn btn-refresh" onclick="loadReviews()">🔄 Refresh</button>
+        </div>
+        <div id="reviews-list">
+          <p class="empty">Loading...</p>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script>
     const API_BASE = "";
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
 
     function getToken() {
       return sessionStorage.getItem("akshaj_admin_token");
@@ -130,6 +175,14 @@
     function logout() {
       sessionStorage.removeItem("akshaj_admin_token");
       showLogin();
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.getElementById("tab-" + tab).classList.add("active");
+      if (tab === "photos") loadPhotos();
+      if (tab === "reviews") loadReviews();
     }
 
     document.getElementById("login-form").addEventListener("submit", async (e) => {
@@ -155,13 +208,12 @@
       }
     });
 
+    // ===== Enquiries =====
     async function loadEnquiries() {
       const tbody = document.getElementById("enquiry-body");
       tbody.innerHTML = '<tr><td colspan="10" class="empty">Loading...</td></tr>';
       try {
-        const res = await fetch(`${API_BASE}/api/enquiries`, {
-          headers: { "x-admin-token": getToken() }
-        });
+        const res = await fetch(`${API_BASE}/api/enquiries`, { headers: { "x-admin-token": getToken() } });
         if (res.status === 401) { logout(); return; }
         const data = await res.json();
         if (!data.length) {
@@ -179,7 +231,7 @@
             <td>${e.address || "-"}</td>
             <td>${e.message || "-"}</td>
             <td>${e.page || "-"}</td>
-            <td><button class="del-btn" onclick="deleteOne('${e._id}')">Delete</button></td>
+            <td><button class="del-btn" onclick="deleteOneEnquiry('${e._id}')">Delete</button></td>
           </tr>
         `).join("");
       } catch (err) {
@@ -187,22 +239,124 @@
       }
     }
 
-    async function deleteOne(id) {
+    async function deleteOneEnquiry(id) {
       if (!confirm("Delete this enquiry?")) return;
-      await fetch(`${API_BASE}/api/enquiries/${id}`, {
-        method: "DELETE",
-        headers: { "x-admin-token": getToken() }
-      });
+      await fetch(`${API_BASE}/api/enquiries/${id}`, { method: "DELETE", headers: { "x-admin-token": getToken() } });
       loadEnquiries();
     }
 
-    async function deleteAll() {
+    async function deleteAllEnquiries() {
       if (!confirm("Delete ALL enquiries? This cannot be undone.")) return;
-      await fetch(`${API_BASE}/api/enquiries`, {
-        method: "DELETE",
-        headers: { "x-admin-token": getToken() }
-      });
+      await fetch(`${API_BASE}/api/enquiries`, { method: "DELETE", headers: { "x-admin-token": getToken() } });
       loadEnquiries();
+    }
+
+    // ===== Work Photos =====
+    document.getElementById("photo-upload-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("photo-file");
+      const caption = document.getElementById("photo-caption").value;
+      const statusBox = document.getElementById("upload-status");
+      if (!fileInput.files[0]) return;
+
+      const formData = new FormData();
+      formData.append("photo", fileInput.files[0]);
+      formData.append("caption", caption);
+
+      statusBox.textContent = "Uploading...";
+      statusBox.style.color = "#6b7280";
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/work-photos`, {
+          method: "POST",
+          headers: { "x-admin-token": getToken() },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          statusBox.textContent = "Uploaded successfully!";
+          statusBox.style.color = "#15803d";
+          document.getElementById("photo-upload-form").reset();
+          loadPhotos();
+        } else {
+          statusBox.textContent = data.error || "Upload failed.";
+          statusBox.style.color = "#d32f2f";
+        }
+      } catch (err) {
+        statusBox.textContent = "Could not reach server.";
+        statusBox.style.color = "#d32f2f";
+      }
+    });
+
+    async function loadPhotos() {
+      const grid = document.getElementById("photo-grid");
+      grid.innerHTML = '<p class="empty">Loading...</p>';
+      try {
+        const res = await fetch(`${API_BASE}/api/work-photos`);
+        const data = await res.json();
+        if (!data.length) {
+          grid.innerHTML = '<p class="empty">No photos uploaded yet.</p>';
+          return;
+        }
+        grid.innerHTML = data.map(p => `
+          <div class="photo-card">
+            <img src="${p.imageData}" alt="${escapeHtml(p.caption || 'Work photo')}" />
+            <div class="photo-card-body">
+              <p>${escapeHtml(p.caption) || "No caption"}</p>
+              <button class="del-btn" onclick="deletePhoto('${p._id}')">Delete</button>
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        grid.innerHTML = '<p class="empty">Failed to load photos.</p>';
+      }
+    }
+
+    async function deletePhoto(id) {
+      if (!confirm("Delete this photo?")) return;
+      await fetch(`${API_BASE}/api/admin/work-photos/${id}`, { method: "DELETE", headers: { "x-admin-token": getToken() } });
+      loadPhotos();
+    }
+
+    // ===== Reviews =====
+    async function loadReviews() {
+      const list = document.getElementById("reviews-list");
+      list.innerHTML = '<p class="empty">Loading...</p>';
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/reviews`, { headers: { "x-admin-token": getToken() } });
+        if (res.status === 401) { logout(); return; }
+        const data = await res.json();
+        if (!data.length) {
+          list.innerHTML = '<p class="empty">No reviews yet.</p>';
+          return;
+        }
+        list.innerHTML = data.map(r => `
+          <div class="review-card">
+            <div class="stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+            <p>"${escapeHtml(r.reviewText)}"</p>
+            <div class="meta">
+              <strong>${escapeHtml(r.name)}</strong> · ${new Date(r.createdAt).toLocaleDateString()}
+              <span class="status-pill ${r.approved ? "status-approved" : "status-pending"}">${r.approved ? "Approved" : "Pending"}</span>
+            </div>
+            <div style="margin-top:10px;">
+              ${!r.approved ? `<button class="approve-btn" onclick="approveReview('${r._id}')">✓ Approve</button>` : ""}
+              <button class="del-btn" onclick="deleteReview('${r._id}')">Delete</button>
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        list.innerHTML = '<p class="empty">Failed to load reviews.</p>';
+      }
+    }
+
+    async function approveReview(id) {
+      await fetch(`${API_BASE}/api/admin/reviews/${id}/approve`, { method: "PATCH", headers: { "x-admin-token": getToken() } });
+      loadReviews();
+    }
+
+    async function deleteReview(id) {
+      if (!confirm("Delete this review?")) return;
+      await fetch(`${API_BASE}/api/admin/reviews/${id}`, { method: "DELETE", headers: { "x-admin-token": getToken() } });
+      loadReviews();
     }
 
     if (getToken()) {

@@ -81,6 +81,12 @@
         </div>
       </div>
 
+      <div id="dynamic-work-wrap" style="margin-top:50px; display:none;">
+        <div class="section-tag center">Recent Additions</div>
+        <h2 class="section-title center" style="font-size:24px;">More From Our Recent Work</h2>
+        <div class="work-grid" id="dynamic-work-grid" style="margin-top:20px;"></div>
+      </div>
+
       <p style="text-align:center; color:var(--gray); margin-top:30px; font-size:14px;">
         📌 More project photos will be added regularly as new installations are completed.
       </p>
@@ -95,26 +101,26 @@
       <div class="testimonial-grid">
         <div class="testimonial-card">
           <div class="stars">★★★★★</div>
-          <p>"Very professional team, installation was completed on time and the subsidy process was handled smoothly for us."</p>
+          <p>"Solar panel quality is excellent and Akshaj staff is very supportive to any enquiry you ask to him."</p>
+          <div class="testimonial-user">
+            <div class="testimonial-avatar">O</div>
+            <div><strong>Omkar Bokade</strong><span>Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"I recently availed roof top solar from Akshaj Solar. Right from installation the service is excellent and will recommend to my friends and relatives to avail solar system from Akshaj Solar."</p>
           <div class="testimonial-user">
             <div class="testimonial-avatar">R</div>
-            <div><strong>Rohit S.</strong><span>Pimpri-Chinchwad</span></div>
+            <div><strong>Rajkumar Khilare</strong><span>Google Review</span></div>
           </div>
         </div>
         <div class="testimonial-card">
           <div class="stars">★★★★★</div>
-          <p>"Our electricity bill has reduced drastically after installation. Great service and support even after installation."</p>
+          <p>"The service is excellent... the staff is interactive and calm... they respond well to every query. 😊"</p>
           <div class="testimonial-user">
-            <div class="testimonial-avatar">S</div>
-            <div><strong>Sneha P.</strong><span>Ravet</span></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="stars">★★★★★</div>
-          <p>"They helped us get the bank loan at low interest and guided us through every step. Highly recommended."</p>
-          <div class="testimonial-user">
-            <div class="testimonial-avatar">A</div>
-            <div><strong>Amit K.</strong><span>Chinchwad</span></div>
+            <div class="testimonial-avatar">M</div>
+            <div><strong>Manisha Chavan</strong><span>Google Review</span></div>
           </div>
         </div>
       </div>
@@ -171,5 +177,31 @@
   </footer>
 
   <script src="js/script.js"></script>
+  <script>
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
+
+    (async function loadDynamicWorkPhotos() {
+      try {
+        const res = await fetch("/api/work-photos");
+        const photos = await res.json();
+        if (!photos.length) return;
+        const grid = document.getElementById("dynamic-work-grid");
+        const wrap = document.getElementById("dynamic-work-wrap");
+        grid.innerHTML = photos.map(p => `
+          <div class="work-card">
+            <img src="${p.imageData}" alt="${escapeHtml(p.caption || 'Work photo')}" loading="lazy" />
+            <div class="overlay">${escapeHtml(p.caption) || "Our Work"}</div>
+          </div>
+        `).join("");
+        wrap.style.display = "block";
+      } catch (err) {
+        console.error("Could not load work photos:", err);
+      }
+    })();
+  </script>
 </body>
 </html>
